@@ -1,38 +1,74 @@
 using Fusion;
 using UnityEngine;
 
-public class Health: NetworkBehaviour
+public class Health : NetworkBehaviour
 {
-    [SerializeField] NumberField HealthDisplay;
+    [SerializeField] private NumberField HealthDisplay;
+    [SerializeField] private float invulnerabilityDuration = 2f; // Duration of invulnerability in seconds
+    [SerializeField] private MeshRenderer meshRenderer; // Reference to the MeshRenderer
+
+    [Networked]
+    private Color NetworkedColor { get; set; }
 
     [Networked]
     public int NetworkedHealth { get; set; } = 100;
 
-    // Migration from Fusion 1:  https://doc.photonengine.com/fusion/current/getting-started/migration/coming-from-fusion-v1
-    private ChangeDetector _changes;
+    private bool isInvulnerable = false;
+    private float invulnerabilityEndTime;
+    private Color originalColor;
 
-    public override void Spawned() {
-        _changes = GetChangeDetector(ChangeDetector.Source.SimulationState);
+    public override void Spawned()
+    {
+        if (meshRenderer != null)
+        {
+            originalColor = meshRenderer.material.color;
+            NetworkedColor = originalColor; // Initialize the networked color
+        }
+
         HealthDisplay.SetNumber(NetworkedHealth);
     }
 
-    public override void Render() {
-        foreach (var change in _changes.DetectChanges(this, out var previousBuffer, out var currentBuffer)) {
-            switch (change) {
-                case nameof(NetworkedHealth):
-                    //var reader = GetPropertyReader<int>(nameof(NetworkedHealth));
-                    //var (previous, current) = reader.Read(previousBuffer, currentBuffer);
-                    HealthDisplay.SetNumber(NetworkedHealth);
-                    break;
-            }
+    public override void Render()
+    {
+        // Synchronize the material color for all clients
+        if (meshRenderer != null && meshRenderer.material.color != NetworkedColor)
+        {
+            meshRenderer.material.color = NetworkedColor;
         }
+
+        // Update the health display
+        HealthDisplay.SetNumber(NetworkedHealth);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    // All players can call this function; only the StateAuthority receives the call.
-    public void DealDamageRpc(int damage) {
-        // The code inside here will run on the client which owns this object (has state and input authority).
+    public void DealDamageRpc(int damage)
+    {
+        if (isInvulnerable)
+        {
+            Debug.Log("Damage ignored due to invulnerability.");
+            return;
+        }
+
         Debug.Log("Received DealDamageRpc on StateAuthority, modifying Networked variable");
         NetworkedHealth -= damage;
+
+        // Trigger invulnerability frames
+        isInvulnerable = true;
+        invulnerabilityEndTime = Time.time + invulnerabilityDuration;
+
+        // Change color to white
+        NetworkedColor = Color.white;
+    }
+
+    private void Update()
+    {
+        if (isInvulnerable && Time.time >= invulnerabilityEndTime)
+        {
+            isInvulnerable = false;
+            Debug.Log("Invulnerability ended.");
+
+            // Revert color to original
+            NetworkedColor = originalColor;
+        }
     }
 }

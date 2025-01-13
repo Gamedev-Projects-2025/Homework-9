@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3082424236668123329}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Ball
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20118001, y: 0.20118001, z: 0.20118001}
+  m_LocalScale: {x: 0.78386265, y: 0.78386265, z: 0.78386265}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8771616593964601609}
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 64de9b0c22247cd46ba97531340e89c3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,10 +98,10 @@ GameObject:
   - component: {fileID: 4315398624292234381}
   - component: {fileID: 8100148319601221671}
   - component: {fileID: 5840047393876448009}
-  - component: {fileID: 1416858500274889926}
+  - component: {fileID: 3642807962952781649}
   m_Layer: 0
-  m_Name: Ball
-  m_TagString: Ball
+  m_Name: shieldSpawner
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,13 +151,12 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 264382665
+  SortKey: 2542499688
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4315398624292234381}
-  - {fileID: 1416858500274889926}
   ForceRemoteRenderTimeframe: 0
 --- !u!135 &5840047393876448009
 SphereCollider:
@@ -178,9 +177,9 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.1
+  m_Radius: 0.4037403
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1416858500274889926
+--- !u!114 &3642807962952781649
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,9 +188,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7684413099106084849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3a3417472b06d42aa12eec67dbb08d, type: 3}
+  m_Script: {fileID: 11500000, guid: 32d02ca9c78897a41bba4205a124800f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 5
-  speed: 5
-  damagePerHit: 1
+  prefabToSpawn: {fileID: 4670411976358782716, guid: a718504b3d584bc4b88439d71400bcb3, type: 3}
