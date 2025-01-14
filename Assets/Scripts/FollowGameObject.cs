@@ -4,11 +4,9 @@ public class FollowGameObject : MonoBehaviour
 {
     public Transform target;
 
-    private void Update()
+    private void Start()
     {
-        if (target != null)
-        {
-            transform.SetParent(target);
-        }
+        transform.position = target.position;
+        transform.SetParent(target);
     }
 }

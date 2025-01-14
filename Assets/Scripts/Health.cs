@@ -57,6 +57,13 @@ public class Health : NetworkBehaviour
 
         // Change color to white
         NetworkedColor = Color.white;
+
+        // Check if health is zero or below
+        if (NetworkedHealth <= 0)
+        {
+            Debug.Log("Health is zero. Despawning player.");
+            Runner.Despawn(Object);
+        }
     }
 
     private void Update()
