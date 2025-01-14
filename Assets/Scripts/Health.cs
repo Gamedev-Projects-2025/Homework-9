@@ -48,7 +48,6 @@ public class Health : NetworkBehaviour
             Debug.Log("Damage ignored due to invulnerability.");
             return;
         }
-
         Debug.Log("Received DealDamageRpc on StateAuthority, modifying Networked variable");
         NetworkedHealth -= damage;
 

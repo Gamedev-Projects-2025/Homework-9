@@ -1,43 +1,50 @@
 using Fusion;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerColor : NetworkBehaviour
 {
-    [Networked]
-    public Color NetworkedColor { get; set; }
+    [Networked] public string PlayerTag { get; set; } // Networked tag (e.g., "blu" or "red")
+    [Networked] public Color NetworkedColor { get; set; } // Networked color
 
-    private ChangeDetector _changes;
     private MeshRenderer meshRendererToChange;
 
-    public override void Spawned() {
-        _changes = GetChangeDetector(ChangeDetector.Source.SimulationState);
+    public override void Spawned()
+    {
         meshRendererToChange = GetComponentInChildren<MeshRenderer>();
-        if (NetworkedColor != null)
-            meshRendererToChange.material.color = NetworkedColor;
+
+        // Assign the tag and color for the local player with State Authority
+        if (HasStateAuthority)
+        {
+            AssignPlayerTagAndColor(Object.InputAuthority);
+        }
+
+        // Apply the color to the player's mesh
+        meshRendererToChange.material.color = NetworkedColor;
     }
 
-    public override void Render() {
-        foreach (var change in _changes.DetectChanges(this, out var previousBuffer, out var currentBuffer)) {
-            switch (change) {
-                case nameof(NetworkedColor):
-                    //var reader = GetPropertyReader<Color>(nameof(NetworkedColor));
-                    //var (previous, current) = reader.Read(previousBuffer, currentBuffer);
-                    meshRendererToChange.material.color = NetworkedColor;
-                    break;
-            }
-        }
+    public override void Render()
+    {
+        // Update the player's color if it changes
+        meshRendererToChange.material.color = NetworkedColor;
     }
 
-    public override void FixedUpdateNetwork() {
-        if (GetInput(out NetworkInputData inputData)) {
-            if (HasStateAuthority && inputData.colorActionValue) {
-                    Debug.Log("Color Change");
-                    var randomColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-                    // Changing the material color here directly does not work since this code is only executed on the client pressing the button and not on every client.
-                    // meshRendererToChange.material.color = randomColor;
-                    NetworkedColor = randomColor;
-            }
+    /// <summary>
+    /// Assigns a tag and corresponding color to the player based on their PlayerRef.
+    /// </summary>
+    private void AssignPlayerTagAndColor(PlayerRef player)
+    {
+        // Assign tags dynamically (replace with your own logic)
+        if (player.PlayerId % 2 == 0)
+        {
+            PlayerTag = "blu";
+            NetworkedColor = Color.blue;
         }
+        else
+        {
+            PlayerTag = "red";
+            NetworkedColor = Color.red;
+        }
+
+        Debug.Log($"Player {player.PlayerId} assigned tag '{PlayerTag}' with color {NetworkedColor}");
     }
 }
