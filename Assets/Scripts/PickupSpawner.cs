@@ -12,8 +12,7 @@ public class PickupSpawner : MonoBehaviour
             FollowGameObject followScript = spawnedObject.GetComponent<FollowGameObject>();
             if (followScript != null)
             {
-                followScript.target = other.transform;
-                
+                followScript.target = other.transform;       
             }
             Destroy(gameObject);
         }

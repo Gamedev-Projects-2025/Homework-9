@@ -265,7 +265,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 44
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -292,7 +292,11 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+<<<<<<< HEAD
   m_LocalPosition: {x: 0, y: 12, z: -20}
+=======
+  m_LocalPosition: {x: 0, y: 17, z: -20}
+>>>>>>> 5d61d3d3572e6e95681748cb75c1223abd692d11
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -633,9 +637,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3431d87a63cd2409ec66f405ab86c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   pickupPrefab: {fileID: 7684413099106084849, guid: 1aa92e9147e821649ae39dba66375439, type: 3}
   spawnAreaSize: {x: 10, y: 1, z: 10}
   spawnInterval: 5
+=======
+>>>>>>> 5d61d3d3572e6e95681748cb75c1223abd692d11
 --- !u!1 &1546032931
 GameObject:
   m_ObjectHideFlags: 0
